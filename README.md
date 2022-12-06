@@ -39,6 +39,30 @@ DeviseAuth.configure do
 end
 ```
 
+3. Add `auth_identitable` to model, example.
+
+```ruby
+# app/models/members
+
+devise :database_authenticatable, :registerable, :confirmable,
+       ..., :auth_identitable
+```
+
+4. (Optional) Add custom scope when database authentication(LocalStrategy)
+
+```ruby
+# app/models/member.rb
+
+scope :registered, -> { where(is_registered: true) }
+
+class << self
+...
+def devise_auth_find_member_scope
+  registered
+end
+
+```
+
 ## Usage
 
 Dispatch the strategy by OAuth grant_type and provider, it's design base on doorkeeper, so you can just pass the params to `auth_with_doorkeeper`.
@@ -55,6 +79,8 @@ resource_owner_from_credentials do
   #   password: "testtest"
   #   # provider: "ldap",
   # }
+
+  # retrun member or nil
   DeviseAuth.auth_with_doorkeeper(params)
 rescue DeviseAuth::Errors::ThirdPartyNotProvideEmail
   # Custom Error 
