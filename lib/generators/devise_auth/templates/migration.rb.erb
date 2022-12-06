@@ -13,9 +13,5 @@ class CreateDeviseAuthTables < ActiveRecord::Migration<%= migration_version %>
 
     # Uncomment below to ensure a valid reference to the owner's table
     # add_foreign_key :identities, <model>, column: :owner_id
-
-    # unless column_exists? <model>, :is_registered
-    #   add_column <model>, :is_registered, :string, default: true
-    # end
   end
 end

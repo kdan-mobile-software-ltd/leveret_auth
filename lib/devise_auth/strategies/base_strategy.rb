@@ -23,6 +23,10 @@ module DeviseAuth
 
       private
 
+      def owner_model
+        DeviseAuth.configuration.owner_model
+      end
+
       def permitted_attrs
         raise 'Must implement Method: `permitted_attr`'
       end

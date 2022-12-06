@@ -18,8 +18,9 @@ module DeviseAuth
         verified_entry = entrys.find { |entry| client.bind_as(entry.dn, @password) }
         return if verified_entry.nil?
 
-        owner_model = DeviseAuth.configuration.owner_model
-        owner_model.setup_member_from_third_party('ldap', verified_entry.dn, verified_entry.mail&.first)
+        owner_model.setup_member_from_third_party(uid: verified_entry.dn,
+                                                  provider: 'ldap',
+                                                  email: @email)
       end
 
       private
