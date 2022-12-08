@@ -19,7 +19,7 @@ module Devise
 
           identity.owner = setup_with_temporary_passsword(email)
           identity.save!
-          member
+          identity.owner
         end
 
         private
@@ -28,7 +28,7 @@ module Devise
           member = find_or_initialize_by(email: email)
           member unless member.new_record?
 
-          member.password = Secrets.default_password
+          member.password = DeviseAuth.configuration.owner_default_password
           member.skip_confirmation!
           member.save!
           member

@@ -46,6 +46,10 @@ module DeviseAuth
       @owner_model ||= owner_name.constantize
     end
 
+    def owner_default_password
+      @owner_default_password
+    end
+
     def identities_model
       @identities_model ||= 'DeviseAuth::Identities'.constantize
     end
@@ -58,11 +62,23 @@ module DeviseAuth
       end
 
       def build
+        validate
         @config
+      end
+
+      def validate
+        if @config.owner_default_password.nil?
+          raise ArgumentError,
+                'Must configure owner default password by call `owner_default_password password`'
+        end
       end
 
       def devise_for(owner_name)
         @config.instance_variable_set(:@owner_name, owner_name)
+      end
+
+      def owner_default_password(password)
+        @config.instance_variable_set(:@owner_default_password, password)
       end
 
       def add_provider(name, **opts)
