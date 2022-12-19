@@ -5,13 +5,13 @@ class CreateDeviseAuthTables < ActiveRecord::Migration<%= migration_version %>
     create_table :identities do |t|
       t.string :uid, null: false
       t.string :provider, null: false
-      t.references :owner,  null: false
+      t.references :user,  null: false
       t.timestamps
     end
 
     add_index :identities, [:uid, :provider]
 
-    # Uncomment below to ensure a valid reference to the owner's table
-    # add_foreign_key :identities, <model>, column: :owner_id
+    # Uncomment below to ensure a valid reference to the user's table
+    # add_foreign_key :identities, <model>, column: :user_id
   end
 end

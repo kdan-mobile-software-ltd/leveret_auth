@@ -2,6 +2,11 @@
 
 `Devise Auth` is a extension gem which provide various authenticate strategies
 
+## Prerequisites
+
+- `net-ldap` >= `0.1`
+- `devise` >= `4.8.1'`
+
 ## Installation
 
 Add `devise_auth` to your Rails application's `Gemfile`.
@@ -26,7 +31,8 @@ $ bundle install
 # config/initializer/devise_auth.rb
 
 DeviseAuth.configure do
-  devise_for :members # Devise model name
+  devise_for :users # Devise model name
+  user_default_password '...'
 
   # Optional to add provider
   #
@@ -42,7 +48,7 @@ end
 3. Add `auth_identitable` to model, example.
 
 ```ruby
-# app/models/members
+# app/models/users.rb
 
 devise :database_authenticatable, :registerable, :confirmable,
        ..., :auth_identitable
@@ -51,13 +57,13 @@ devise :database_authenticatable, :registerable, :confirmable,
 4. (Optional) Add custom scope when database authentication(LocalStrategy)
 
 ```ruby
-# app/models/member.rb
+# app/models/users.rb
 
 scope :registered, -> { where(is_registered: true) }
 
 class << self
 ...
-def devise_auth_find_member_scope
+def devise_auth_find_user_scope
   registered
 end
 
@@ -86,14 +92,16 @@ rescue DeviseAuth::Errors::ThirdPartyNotProvideEmail
   # Custom Error 
 rescue DeviseAuth::Errors::StrategyNotFound
   # Custom Error
+rescue DeviseAuth::Errors::InvalidCredential || ActiveRecord::RecordNotFound
+  # Custom Error
 end
 ```
 
 ## Allowed Strategies
 
-|     Name      | Grant Type | Provider | Permitted Attributes |      Description     |
-| ------------- | ---------- | -------- | -------------------- | -------------------- |
-| LocalStrategy |  `password`  |  `N/A`  | `email` & `password` | database autherciate |
+|     Name      |  Grant Type  | Provider | Permitted Attributes |      Description     |
+| ------------- | ------------ | -------- | -------------------- | -------------------- |
+| LocalStrategy |  `password`  |  `N/A`   | `email` & `password` | database autherciate |
 | LdapStrategy  |  `password`  |  `ldap`  | `email` & `password` |   ldap autherciate   |
 
 ## Ldap Configuration
@@ -102,26 +110,21 @@ end
 {
   "host":"localhost",
   "port":"7389",
-  "base":"dc=kdanmobile,dc=com",
+  "base":"dc=example,dc=com",
   // optional
   "encryption": {
     "method": "simple_tls" // "simple_tls", "start_tls"
-    "tls_options": {
-      // OpenSSL::SSL::SSLContext Settings
-      ...
-    }
   },
   "auth":{
     "method": "simple",
-    "username": "cn=admin,dc=kdanmobile,dc=com",
+    "username": "cn=admin,dc=example,dc=com",
     "password": "admin"
   },
-  // one of uid and filter must be configured
+  // Be sure to configure one of uid or filter
   "uid": "mail",
-  // username will be replaced to email when search
+  // username will be replaced with email when searching
   "filter": "(&(uid=%{username})(memberOf=cn=myapp-users,ou=groups,dc=example,dc=com))"
 }
 ```
 
 ## Others
-

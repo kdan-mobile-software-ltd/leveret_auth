@@ -13,14 +13,14 @@ module DeviseAuth
 
       def authenticate!
         entrys = client.search(@email)
-        return if entrys.nil?
+        raise ActiveRecord::RecordNotFound if entrys.nil?
 
         verified_entry = entrys.find { |entry| client.bind_as(entry.dn, @password) }
-        return if verified_entry.nil?
+        raise Errors::InvalidCredential if verified_entry.nil?
 
-        owner_model.setup_member_from_third_party(uid: verified_entry.dn,
-                                                  provider: 'ldap',
-                                                  email: @email)
+        user_model.setup_user_from_third_party(uid: verified_entry.dn,
+                                               provider: 'ldap',
+                                               email: @email)
       end
 
       private

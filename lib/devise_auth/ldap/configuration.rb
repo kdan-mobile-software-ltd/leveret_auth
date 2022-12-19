@@ -4,7 +4,6 @@ module DeviseAuth
   module Ldap
     class Configuration
       class ConfigurationError < StandardError; end
-      include Utils
 
       # For build Net::LDAP::Connection
       REQUIRED_CONNECTION_CONFIG_KEYS = %i[host port base].freeze
@@ -22,7 +21,7 @@ module DeviseAuth
         validate_required_keys(configuration)
 
         permitted_keys = [permitted_connection_keys + permitted_search_keys].flatten
-        deep_slice(configuration, permitted_keys).each do |k, v|
+        Utils.deep_slice(configuration, permitted_keys).each do |k, v|
           instance_variable_set("@#{k}", v)
         end
 
@@ -45,13 +44,14 @@ module DeviseAuth
 
       def validate_required_keys(configuration)
         required_keys = REQUIRED_CONNECTION_CONFIG_KEYS + REQUIRED_SEARCH_CONFIG_KEYS
-        missing_keys = validate(configuration, required_keys)
+        missing_keys = Utils.validate(configuration, required_keys)
 
-        raise ConfigurationError, build_error_message(missing_keys) unless missing_keys.empty?
+        raise ConfigurationError, Utils.build_error_message(missing_keys) unless missing_keys.empty?
       end
 
       def validate_encryption
         return if @encryption.nil?
+        return unless @encryption.is_a?(Hash)
 
         @encryption[:method] = @encryption[:method].to_sym
         return if %i[simple_tls start_tls].include?(@encryption[:method])

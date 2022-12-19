@@ -3,7 +3,7 @@
 module DeviseAuth
   class MissingConfiguration < StandardError
     def initialize
-      super("Configuration for on-premise auth missing. Do you have on-premise auth initializer?")
+      super('Configuration for devise auth missing. Do you have on-premise auth initializer?')
     end
   end
 
@@ -38,16 +38,16 @@ module DeviseAuth
       @providers ||= []
     end
 
-    def owner_name
-      @owner_name.to_s.classify
+    def user_model_name
+      @user_model_name.to_s.classify
     end
 
-    def owner_model
-      @owner_model ||= owner_name.constantize
+    def user_model
+      @user_model ||= user_model_name.constantize
     end
 
-    def owner_default_password
-      @owner_default_password
+    def user_default_password
+      @user_default_password
     end
 
     def identities_model
@@ -67,22 +67,22 @@ module DeviseAuth
       end
 
       def validate
-        if @config.owner_default_password.nil?
+        if @config.user_default_password.nil?
           raise ArgumentError,
-                'Must configure owner default password by call `owner_default_password password`'
+                'Must configure user default password by call `user_default_password password`'
         end
       end
 
-      def devise_for(owner_name)
-        @config.instance_variable_set(:@owner_name, owner_name)
+      def devise_for(model_name)
+        @config.instance_variable_set(:@user_model_name, model_name)
       end
 
-      def owner_default_password(password)
-        @config.instance_variable_set(:@owner_default_password, password)
+      def user_default_password(password)
+        @config.instance_variable_set(:@user_default_password, password)
       end
 
       def add_provider(name, **opts)
-        opts = load_provider_options_file(opts[:file_path]) if opts[:file_path]
+        opts = Utils.load_json_file(opts[:file_path]) if opts[:file_path]
         begin
           klass = DeviseAuth::Strategies.const_get("#{name.to_s.camelize}Strategy")
         rescue NameError
@@ -90,11 +90,6 @@ module DeviseAuth
         end
         @config.providers << name.downcase
         klass.configure(opts.compact)
-      end
-
-      def load_provider_options_file(file_path)
-        file = File.open(Rails.root.join(file_path), 'r').read
-        JSON.parse(file).deep_symbolize_keys
       end
     end
   end

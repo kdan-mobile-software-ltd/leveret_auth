@@ -8,8 +8,8 @@ module DeviseAuth::Orm::ActiveRecord::Mixins
       self.table_name = 'identities'
       self.strict_loading_by_default = false if respond_to?(:strict_loading_by_default)
 
-      belongs_to :owner, class_name: "::#{DeviseAuth.configuration.owner_name}",
-                         inverse_of: :identities
+      belongs_to :user, class_name: "::#{DeviseAuth.configuration.user_model_name}",
+                        inverse_of: :identities
     end
   end
 end

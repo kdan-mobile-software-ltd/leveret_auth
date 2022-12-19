@@ -23,8 +23,8 @@ module DeviseAuth
 
       private
 
-      def owner_model
-        DeviseAuth.configuration.owner_model
+      def user_model
+        DeviseAuth.configuration.user_model
       end
 
       def permitted_attrs
