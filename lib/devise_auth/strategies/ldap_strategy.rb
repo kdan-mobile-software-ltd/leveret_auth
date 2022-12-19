@@ -13,7 +13,7 @@ module DeviseAuth
 
       def authenticate!
         entrys = client.search(@email)
-        raise ActiveRecord::RecordNotFound if entrys.nil?
+        raise Errors::InvalidCredential if entrys.nil?
 
         verified_entry = entrys.find { |entry| client.bind_as(entry.dn, @password) }
         raise Errors::InvalidCredential if verified_entry.nil?

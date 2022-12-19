@@ -54,21 +54,6 @@ devise :database_authenticatable, :registerable, :confirmable,
        ..., :auth_identitable
 ```
 
-4. (Optional) Add custom scope when database authentication(LocalStrategy)
-
-```ruby
-# app/models/users.rb
-
-scope :registered, -> { where(is_registered: true) }
-
-class << self
-...
-def devise_auth_find_user_scope
-  registered
-end
-
-```
-
 ## Usage
 
 Dispatch the strategy by OAuth grant_type and provider, it's design base on doorkeeper, so you can just pass the params to `auth_with_doorkeeper`.
@@ -92,7 +77,7 @@ rescue DeviseAuth::Errors::ThirdPartyNotProvideEmail
   # Custom Error 
 rescue DeviseAuth::Errors::StrategyNotFound
   # Custom Error
-rescue DeviseAuth::Errors::InvalidCredential || ActiveRecord::RecordNotFound
+rescue DeviseAuth::Errors::InvalidCredential
   # Custom Error
 end
 ```
