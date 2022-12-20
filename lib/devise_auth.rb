@@ -10,18 +10,12 @@ module DeviseAuth
   autoload :Errors, 'devise_auth/errors'
 
   module Strategies
-    autoload :BaseStrategy, 'devise_auth/strategies/base_strategy'
     autoload :LdapStrategy, 'devise_auth/strategies/ldap_strategy'
     autoload :DeviseStrategy, 'devise_auth/strategies/devise_strategy'
   end
 
   module Orm
     autoload :ActiveRecord, 'devise_auth/orm/active_record'
-  end
-
-  module Ldap
-    autoload :Configuration, 'devise_auth/ldap/configuration'
-    autoload :Connection, 'devise_auth/ldap/connection'
   end
 
   class << self

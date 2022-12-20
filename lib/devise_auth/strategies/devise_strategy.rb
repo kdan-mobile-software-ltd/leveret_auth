@@ -1,3 +1,5 @@
+require 'devise_auth/strategies/base_strategy'
+
 module DeviseAuth
   module Strategies
     class DeviseStrategy < BaseStrategy

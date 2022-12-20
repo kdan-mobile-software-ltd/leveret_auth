@@ -1,13 +1,17 @@
+require 'devise_auth/strategies/base_strategy'
+require 'devise_auth/ldap/configuration'
+require 'devise_auth/ldap/connection'
+
 module DeviseAuth
   module Strategies
     class LdapStrategy < BaseStrategy
       class << self
         def client
-          @client ||= DeviseAuth::Ldap::Connection.new(config)
+          @client ||= Ldap::Connection.new(config)
         end
 
         def configure(configuration)
-          @config = DeviseAuth::Ldap::Configuration.new(configuration)
+          @config = Ldap::Configuration.new(configuration)
         end
       end
 

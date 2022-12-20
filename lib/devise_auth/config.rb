@@ -84,7 +84,7 @@ module DeviseAuth
       def add_provider(name, **opts)
         opts = Utils.load_json_file(opts[:file_path]) if opts[:file_path]
         begin
-          klass = DeviseAuth::Strategies.const_get("#{name.to_s.camelize}Strategy")
+          klass = Strategies.const_get("#{name.to_s.camelize}Strategy")
         rescue NameError
           raise LoadError, "Could not find matching strategy for #{name}."
         end
