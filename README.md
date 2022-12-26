@@ -1,6 +1,6 @@
 # Devise Auth
 
-`Devise Auth` is a extension gem which provide various authenticate strategies
+`Devise Auth` is an extension gem that provides various authentication strategies
 
 ## Prerequisites
 
@@ -56,7 +56,7 @@ devise :database_authenticatable, :registerable, :confirmable,
 
 ## Usage
 
-Dispatch the strategy by OAuth grant_type and provider, it's design base on doorkeeper, so you can just pass the params to `auth_with_doorkeeper`.
+Dispatch the strategy by OAuth grant_type and provider, and it's design is base on the gem doorkeeper so that you can pass the params to `auth_with_doorkeeper`.
 
 ```ruby
 #config/initializer/doorkeeper.rb 裡用

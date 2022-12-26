@@ -18,7 +18,7 @@ module DeviseAuth
       end
 
       def authenticate!
-        raise 'Must implement Method: `autnenciate!`'
+        raise 'Must implement the method: `authenticate!`'
       end
 
       private
@@ -28,7 +28,7 @@ module DeviseAuth
       end
 
       def permitted_attrs
-        raise 'Must implement Method: `permitted_attr`'
+        raise 'Must implement method: `permitted_attrs`'
       end
     end
   end
