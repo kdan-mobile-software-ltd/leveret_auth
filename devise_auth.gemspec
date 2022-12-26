@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name        = 'devise_auth'
+  s.name        = 'leveret_auth'
   s.version     = File.read('./VERSION.md')
   s.platform    = Gem::Platform::RUBY
   s.summary     = 'The devise extension for auth strategy'

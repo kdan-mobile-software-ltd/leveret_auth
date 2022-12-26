@@ -3,11 +3,11 @@
 require 'rails/generators'
 require 'rails/generators/active_record'
 
-module DeviseAuth
+module LeveretAuth
   class MigrationGenerator < ::Rails::Generators::Base
     include ::Rails::Generators::Migration
     source_root File.expand_path('templates', __dir__)
-    desc 'Installs DeviseAuth migration file.'
+    desc 'Installs LeveretAuth migration file.'
 
     def install
       migration_template(

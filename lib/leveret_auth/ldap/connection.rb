@@ -2,7 +2,7 @@
 
 require 'net/ldap'
 
-module DeviseAuth
+module LeveretAuth
   module Ldap
     class Connection
       def initialize(configuration)

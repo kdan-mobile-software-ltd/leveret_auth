@@ -1,4 +1,4 @@
-module DeviseAuth
+module LeveretAuth
   module Strategies
     class BaseStrategy
       class << self
@@ -24,7 +24,7 @@ module DeviseAuth
       private
 
       def user_model
-        DeviseAuth.configuration.user_model
+        LeveretAuth.configuration.user_model
       end
 
       def permitted_attrs

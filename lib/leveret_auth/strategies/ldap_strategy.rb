@@ -1,8 +1,8 @@
-require 'devise_auth/strategies/base_strategy'
-require 'devise_auth/ldap/configuration'
-require 'devise_auth/ldap/connection'
+require 'leveret_auth/strategies/base_strategy'
+require 'leveret_auth/ldap/configuration'
+require 'leveret_auth/ldap/connection'
 
-module DeviseAuth
+module LeveretAuth
   module Strategies
     class LdapStrategy < BaseStrategy
       class << self

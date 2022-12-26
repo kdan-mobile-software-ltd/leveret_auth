@@ -1,6 +1,6 @@
-# Devise Auth
+# Leveret Auth
 
-`Devise Auth` is an extension gem that provides various authentication strategies
+`Leveret Auth` is an extension gem that provides various authentication strategies
 
 ## Prerequisites
 
@@ -9,10 +9,10 @@
 
 ## Installation
 
-Add `devise_auth` to your Rails application's `Gemfile`.
+Add `leveret_auth` to your Rails application's `Gemfile`.
 
 ```ruby
-gem 'devise_auth'
+gem 'leveret_auth'
 ```
 
 And then install the gem.
@@ -23,14 +23,14 @@ $ bundle install
 
 ## Setup
 
-1. Run `rails g devise_auth:migration` to generate the migration file, you may also need to adjust some settings yourself.
+1. Run `rails g leveret_auth:migration` to generate the migration file, you may also need to adjust some settings yourself.
 
 2. You need configure the essential settings in initializer.
 
 ```ruby
-# config/initializer/devise_auth.rb
+# config/initializer/leveret_auth.rb
 
-DeviseAuth.configure do
+LeveretAuth.configure do
   devise_for :users # Devise model name
   user_default_password '...'
 
@@ -72,12 +72,12 @@ resource_owner_from_credentials do
   # }
 
   # retrun member or nil
-  DeviseAuth.auth_with_doorkeeper(params)
-rescue DeviseAuth::Errors::ThirdPartyNotProvideEmail
+  LeveretAuth.auth_with_doorkeeper(params)
+rescue LeveretAuth::Errors::ThirdPartyNotProvideEmail
   # Custom Error 
-rescue DeviseAuth::Errors::StrategyNotFound
+rescue LeveretAuth::Errors::StrategyNotFound
   # Custom Error
-rescue DeviseAuth::Errors::InvalidCredential
+rescue LeveretAuth::Errors::InvalidCredential
   # Custom Error
 end
 ```

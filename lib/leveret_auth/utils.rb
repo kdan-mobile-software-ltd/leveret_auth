@@ -1,4 +1,4 @@
-module DeviseAuth
+module LeveretAuth
   module Utils
     class << self
       def load_json_file(file_path)

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    devise_auth (0.0.1)
+    leveret_auth (0.0.1)
       devise (~> 4.8.1)
       net-ldap (~> 0.1)
 
@@ -79,7 +79,7 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
-  devise_auth!
+  leveret_auth!
 
 BUNDLED WITH
    2.3.4

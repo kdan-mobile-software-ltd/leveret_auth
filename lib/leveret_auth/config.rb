@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module DeviseAuth
+module LeveretAuth
   class MissingConfiguration < StandardError
     def initialize
-      super('Configuration for devise auth missing. Do you have on-premise auth initializer?')
+      super('Configuration for leveret auth missing. Do you have on-premise auth initializer?')
     end
   end
 
@@ -24,7 +24,7 @@ module DeviseAuth
     private
 
     def run_orm_hooks
-      DeviseAuth::Orm::ActiveRecord.run_hooks
+      LeveretAuth::Orm::ActiveRecord.run_hooks
     end
 
     def add_extension_to_devise
@@ -51,7 +51,7 @@ module DeviseAuth
     end
 
     def identities_model
-      @identities_model ||= 'DeviseAuth::Identities'.constantize
+      @identities_model ||= 'LeveretAuth::Identities'.constantize
     end
 
     # Default DiviseAuth configuration builder

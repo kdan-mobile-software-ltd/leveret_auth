@@ -1,7 +1,7 @@
-module DeviseAuth
+module LeveretAuth
   class Engine < Rails::Engine
     config.to_prepare do
-      DeviseAuth.setup
+      LeveretAuth.setup
     end
   end
 end

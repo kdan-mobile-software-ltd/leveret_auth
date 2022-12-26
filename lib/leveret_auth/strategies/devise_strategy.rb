@@ -1,6 +1,6 @@
-require 'devise_auth/strategies/base_strategy'
+require 'leveret_auth/strategies/base_strategy'
 
-module DeviseAuth
+module LeveretAuth
   module Strategies
     class DeviseStrategy < BaseStrategy
       def authenticate!

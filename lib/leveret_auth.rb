@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require 'devise_auth/utils'
-require 'devise_auth/config'
-require 'devise_auth/engine'
+require 'leveret_auth/utils'
+require 'leveret_auth/config'
+require 'leveret_auth/engine'
 
-# Main DeviseAuth namespace.
+# Main LeveretAuth namespace.
 #
-module DeviseAuth
-  autoload :Errors, 'devise_auth/errors'
+module LeveretAuth
+  autoload :Errors, 'leveret_auth/errors'
 
   module Strategies
-    autoload :LdapStrategy, 'devise_auth/strategies/ldap_strategy'
-    autoload :DeviseStrategy, 'devise_auth/strategies/devise_strategy'
+    autoload :LdapStrategy, 'leveret_auth/strategies/ldap_strategy'
+    autoload :DeviseStrategy, 'leveret_auth/strategies/devise_strategy'
   end
 
   module Orm
-    autoload :ActiveRecord, 'devise_auth/orm/active_record'
+    autoload :ActiveRecord, 'leveret_auth/orm/active_record'
   end
 
   class << self

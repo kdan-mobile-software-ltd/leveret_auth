@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DeviseAuth
+module LeveretAuth
   module Ldap
     class Configuration
       class ConfigurationError < StandardError; end

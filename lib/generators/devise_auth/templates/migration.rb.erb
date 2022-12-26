@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateDeviseAuthTables < ActiveRecord::Migration<%= migration_version %>
+class CreateLeveretAuthTables < ActiveRecord::Migration<%= migration_version %>
   def change
     create_table :identities do |t|
       t.string :uid, null: false

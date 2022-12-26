@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DeviseAuth
+module LeveretAuth
   module Errors
     class StrategyNotFound < StandardError; end
     class ThirdPartyNotProvideEmail < StandardError; end
