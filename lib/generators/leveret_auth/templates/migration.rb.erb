@@ -5,11 +5,11 @@ class CreateLeveretAuthTables < ActiveRecord::Migration<%= migration_version %>
     create_table :identities do |t|
       t.string :uid, null: false
       t.string :provider, null: false
-      t.references :user,  null: false
+      t.references :user, null: false
       t.timestamps
     end
 
-    add_index :identities, [:uid, :provider]
+    add_index :identities, %i[uid provider]
 
     # Uncomment below to ensure a valid reference to the user's table
     # add_foreign_key :identities, <model>, column: :user_id

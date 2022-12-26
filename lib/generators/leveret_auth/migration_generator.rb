@@ -12,7 +12,7 @@ module LeveretAuth
     def install
       migration_template(
         'migration.rb.erb',
-        'db/migrate/create_devise_auth_tables.rb',
+        'db/migrate/create_leveret_auth_tables.rb',
         migration_version: migration_version
       )
     end
