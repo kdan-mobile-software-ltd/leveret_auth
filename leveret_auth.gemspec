@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.files        = Dir["lib/**/*"]
   s.require_path = ["lib"]
-  # s.homepage    = "https://github.com/kdan-mobile-software-ltd/grape_serializer"
+  s.homepage     = "https://github.com/kdan-mobile-software-ltd/leveret_auth"
   s.license      = 'MIT'
 
   s.required_ruby_version = '>= 2.7.0'
