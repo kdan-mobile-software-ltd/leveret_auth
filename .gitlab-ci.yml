@@ -15,4 +15,3 @@ to_gem:
     - gem push $GEM_NAME
   only:
     - master
-    - preparing
