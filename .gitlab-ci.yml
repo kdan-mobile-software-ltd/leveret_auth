@@ -10,8 +10,8 @@ to_gem:
     - chmod 0600 ~/.gem/credentials
     - 'printf -- "---\n:rubygems_api_key: $GEM_HOST_API_KEY\n" > ~/.gem/credentials'
     - RELEASE_VERSION=$(cat VERSION.md)
-    - GEM_NAME=rpdoc-$RELEASE_VERSION.gem
-    - gem build rpdoc.gemspec
+    - GEM_NAME=leveret_auth-$RELEASE_VERSION.gem
+    - gem build leveret_auth.gemspec
     - gem push $GEM_NAME
   only:
-    - /release-\d+\.\d+\.\d+(\.\d+)?/
+    - master
