@@ -1,0 +1,4 @@
+*.gem
+.vscode/
+
+.DS_Store
