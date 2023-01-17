@@ -28,7 +28,7 @@ module Devise
           user = find_or_initialize_by(email: email)
           user unless user.new_record?
 
-          user.password = LeveretAuth.configuration.user_default_password
+          user.password = SecureRandom.hex(16)
           user.skip_confirmation!
           user.save!
           user
