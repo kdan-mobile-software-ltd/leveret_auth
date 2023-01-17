@@ -42,12 +42,12 @@ module LeveretAuth
       @user_model_name.to_s.classify
     end
 
-    def user_model
-      @user_model ||= user_model_name.constantize
+    def before_user_save
+      @before_user_save
     end
 
-    def user_default_password
-      @user_default_password
+    def user_model
+      @user_model ||= user_model_name.constantize
     end
 
     def identities_model
@@ -66,19 +66,14 @@ module LeveretAuth
         @config
       end
 
-      def validate
-        if @config.user_default_password.nil?
-          raise ArgumentError,
-                'Must configure user default password by call `user_default_password password`'
-        end
-      end
+      def validate; end
 
       def devise_for(model_name)
         @config.instance_variable_set(:@user_model_name, model_name)
       end
 
-      def user_default_password(password)
-        @config.instance_variable_set(:@user_default_password, password)
+      def before_user_save(&block)
+        @config.instance_variable_set(:@before_user_save, block) if block_given?
       end
 
       def add_provider(name, **opts)

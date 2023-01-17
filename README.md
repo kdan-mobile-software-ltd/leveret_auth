@@ -32,7 +32,10 @@ $ bundle install
 
 LeveretAuth.configure do
   devise_for :users # Devise model name
-  user_default_password '...'
+
+  before_user_save do |user|
+    ...
+  end
 
   # Optional to add provider
   #
