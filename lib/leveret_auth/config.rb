@@ -42,6 +42,10 @@ module LeveretAuth
       @user_model_name.to_s.classify
     end
 
+    def before_user_save
+      @before_user_save
+    end
+
     def user_model
       @user_model ||= user_model_name.constantize
     end
@@ -66,6 +70,10 @@ module LeveretAuth
 
       def devise_for(model_name)
         @config.instance_variable_set(:@user_model_name, model_name)
+      end
+
+      def before_user_save(&block)
+        @config.instance_variable_set(:@before_user_save, block) if block_given?
       end
 
       def add_provider(name, **opts)

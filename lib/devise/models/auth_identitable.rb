@@ -17,7 +17,7 @@ module Devise
           identity = LeveretAuth::Identities.find_or_initialize_by(uid: uid, provider: provider)
           return identity.user unless identity.new_record?
 
-          identity.user = setup_with_temporary_passsword(email)
+          identity.user = setup_with_temporary_passsword(email, &LeveretAuth.configuration.before_user_save)
           identity.save!
           identity.user
         end
@@ -30,6 +30,7 @@ module Devise
 
           user.password = SecureRandom.hex(16)
           user.skip_confirmation!
+          yield user if block_given?
           user.save!
           user
         end
