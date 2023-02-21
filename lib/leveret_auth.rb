@@ -18,28 +18,19 @@ module LeveretAuth
     autoload :ActiveRecord, 'leveret_auth/orm/active_record'
   end
 
+  module Integration
+    autoload :Doorkeeper, 'leveret_auth/integration/doorkeeper'
+  end
+
   class << self
-    def auth_with_doorkeeper(params)
-      strategy_class = find_strategy(params[:grant_type], provider: params[:provider])
-      strategy = strategy_class.new(params)
-      strategy.authenticate!
+    def find_strategy(strategy_name)
+      raise Errors::StrategyNotFound unless allowed_provider?(strategy_name)
+
+      strategy = "LeveretAuth::Strategies::#{strategy_name.to_s.camelize}Strategy".safe_constantize
+      strategy || (raise Errors::StrategyNotFound)
     end
 
     private
-
-    def find_strategy(grant_type, provider: nil)
-      dispathcer_name = "#{grant_type.to_s.downcase}_strategy"
-      raise Errors::StrategyNotFound unless respond_to?(dispathcer_name, true)
-
-      method(dispathcer_name).call(provider)
-    end
-
-    def password_strategy(provider)
-      return Strategies::DeviseStrategy if provider.nil?
-      raise Errors::StrategyNotFound unless allowed_provider?(provider)
-
-      const_get("Strategies::#{provider.to_s.camelize}Strategy")
-    end
 
     def allowed_provider?(provider)
       return false if provider.nil?

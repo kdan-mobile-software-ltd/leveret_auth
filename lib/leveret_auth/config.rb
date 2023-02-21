@@ -35,7 +35,7 @@ module LeveretAuth
   # Default DiviseAuth configuration
   class Config
     def providers
-      @providers ||= []
+      @providers ||= [:devise]
     end
 
     def user_model_name
