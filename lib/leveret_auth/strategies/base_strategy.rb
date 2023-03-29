@@ -17,8 +17,14 @@ module LeveretAuth
         end
       end
 
+      def verify
+        yield auth_info
+      end
+
       def authenticate!
-        raise 'Must implement the method: `authenticate!`'
+        verify do |auth_info|
+          user_model.setup_user_from_third_party(auth_info[:info][:email], &before_user_save)
+        end
       end
 
       private
@@ -27,8 +33,23 @@ module LeveretAuth
         LeveretAuth.configuration.user_model
       end
 
+      def before_user_save
+        LeveretAuth.configuration.before_user_save
+      end
+
       def permitted_attrs
         raise 'Must implement method: `permitted_attrs`'
+      end
+
+      def auth_info(entity)
+        {
+          provider: 'devise',
+          uid: 'entity.uid',
+          info: {
+            email: 'entity.email'
+          },
+          extra_info: {}
+        }
       end
     end
   end

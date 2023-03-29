@@ -15,16 +15,25 @@ module LeveretAuth
         end
       end
 
-      def authenticate!
+      def verify
         entrys = client.search(@email)
         raise Errors::InvalidCredential if entrys.nil?
 
         verified_entry = entrys.find { |entry| client.bind_as(entry.dn, @password) }
         raise Errors::InvalidCredential if verified_entry.nil?
 
-        user_model.setup_user_from_third_party(uid: verified_entry.dn,
-                                               provider: 'ldap',
-                                               email: @email)
+        yield auth_info(verified_entry)
+      end
+
+      def auth_info(entry)
+        {
+          provider: 'ldap',
+          uid: entry.uid,
+          info: {
+            email: entry.email
+          },
+          extra_info: {}
+        }
       end
 
       private

@@ -1,0 +1,106 @@
+  [1m[35m (6.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to DeviseCreateUsers (20201222075215)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "name" varchar DEFAULT '', "phone_code" varchar DEFAULT '', "phone_number" varchar DEFAULT '', "confirmation_token" varchar, "confirmed_at" datetime, "confirmation_sent_at" datetime, "unconfirmed_email" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "from_application_id" integer)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20201222075215"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateDoorkeeperTables (20201222103231)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "oauth_applications" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "uid" varchar NOT NULL, "secret" varchar NOT NULL, "redirect_uri" text, "scopes" varchar DEFAULT '' NOT NULL, "confidential" boolean DEFAULT 1 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_applications_on_uid" ON "oauth_applications" ("uid")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "oauth_access_grants" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "resource_owner_id" integer NOT NULL, "application_id" integer NOT NULL, "token" varchar NOT NULL, "expires_in" integer NOT NULL, "redirect_uri" text NOT NULL, "created_at" datetime NOT NULL, "revoked_at" datetime, "scopes" varchar DEFAULT '' NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_grants_on_resource_owner_id" ON "oauth_access_grants" ("resource_owner_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_grants_on_application_id" ON "oauth_access_grants" ("application_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_grants_on_token" ON "oauth_access_grants" ("token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aoauth_access_grants" ("id" integer NOT NULL PRIMARY KEY, "resource_owner_id" integer NOT NULL, "application_id" integer NOT NULL, "token" varchar NOT NULL, "expires_in" integer NOT NULL, "redirect_uri" text NOT NULL, "created_at" datetime NOT NULL, "revoked_at" datetime DEFAULT NULL, "scopes" varchar DEFAULT '' NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aoauth_access_grants_on_token" ON "aoauth_access_grants" ("token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aoauth_access_grants_on_application_id" ON "aoauth_access_grants" ("application_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aoauth_access_grants_on_resource_owner_id" ON "aoauth_access_grants" ("resource_owner_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aoauth_access_grants" ("id","resource_owner_id","application_id","token","expires_in","redirect_uri","created_at","revoked_at","scopes")
+                     SELECT "id","resource_owner_id","application_id","token","expires_in","redirect_uri","created_at","revoked_at","scopes" FROM "oauth_access_grants"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "oauth_access_grants"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "oauth_access_grants" ("id" integer NOT NULL PRIMARY KEY, "resource_owner_id" integer NOT NULL, "application_id" integer NOT NULL, "token" varchar NOT NULL, "expires_in" integer NOT NULL, "redirect_uri" text NOT NULL, "created_at" datetime NOT NULL, "revoked_at" datetime DEFAULT NULL, "scopes" varchar DEFAULT '' NOT NULL, CONSTRAINT "fk_rails_b4b53e07b8"
+FOREIGN KEY ("application_id")
+  REFERENCES "oauth_applications" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_grants_on_resource_owner_id" ON "oauth_access_grants" ("resource_owner_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_grants_on_application_id" ON "oauth_access_grants" ("application_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_grants_on_token" ON "oauth_access_grants" ("token")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "oauth_access_grants" ("id","resource_owner_id","application_id","token","expires_in","redirect_uri","created_at","revoked_at","scopes")
+                     SELECT "id","resource_owner_id","application_id","token","expires_in","redirect_uri","created_at","revoked_at","scopes" FROM "aoauth_access_grants"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aoauth_access_grants"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "oauth_access_tokens" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "resource_owner_id" integer, "application_id" integer NOT NULL, "token" varchar NOT NULL, "refresh_token" varchar, "expires_in" integer, "revoked_at" datetime, "created_at" datetime NOT NULL, "scopes" varchar, "previous_refresh_token" varchar DEFAULT '' NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_tokens_on_resource_owner_id" ON "oauth_access_tokens" ("resource_owner_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_tokens_on_application_id" ON "oauth_access_tokens" ("application_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_tokens_on_token" ON "oauth_access_tokens" ("token")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_tokens_on_refresh_token" ON "oauth_access_tokens" ("refresh_token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aoauth_access_tokens" ("id" integer NOT NULL PRIMARY KEY, "resource_owner_id" integer DEFAULT NULL, "application_id" integer NOT NULL, "token" varchar NOT NULL, "refresh_token" varchar DEFAULT NULL, "expires_in" integer DEFAULT NULL, "revoked_at" datetime DEFAULT NULL, "created_at" datetime NOT NULL, "scopes" varchar DEFAULT NULL, "previous_refresh_token" varchar DEFAULT '' NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aoauth_access_tokens_on_refresh_token" ON "aoauth_access_tokens" ("refresh_token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aoauth_access_tokens_on_token" ON "aoauth_access_tokens" ("token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aoauth_access_tokens_on_application_id" ON "aoauth_access_tokens" ("application_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aoauth_access_tokens_on_resource_owner_id" ON "aoauth_access_tokens" ("resource_owner_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aoauth_access_tokens" ("id","resource_owner_id","application_id","token","refresh_token","expires_in","revoked_at","created_at","scopes","previous_refresh_token")
+                     SELECT "id","resource_owner_id","application_id","token","refresh_token","expires_in","revoked_at","created_at","scopes","previous_refresh_token" FROM "oauth_access_tokens"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "oauth_access_tokens"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "oauth_access_tokens" ("id" integer NOT NULL PRIMARY KEY, "resource_owner_id" integer DEFAULT NULL, "application_id" integer NOT NULL, "token" varchar NOT NULL, "refresh_token" varchar DEFAULT NULL, "expires_in" integer DEFAULT NULL, "revoked_at" datetime DEFAULT NULL, "created_at" datetime NOT NULL, "scopes" varchar DEFAULT NULL, "previous_refresh_token" varchar DEFAULT '' NOT NULL, CONSTRAINT "fk_rails_732cb83ab7"
+FOREIGN KEY ("application_id")
+  REFERENCES "oauth_applications" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_tokens_on_resource_owner_id" ON "oauth_access_tokens" ("resource_owner_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_tokens_on_application_id" ON "oauth_access_tokens" ("application_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_tokens_on_token" ON "oauth_access_tokens" ("token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_tokens_on_refresh_token" ON "oauth_access_tokens" ("refresh_token")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "oauth_access_tokens" ("id","resource_owner_id","application_id","token","refresh_token","expires_in","revoked_at","created_at","scopes","previous_refresh_token")
+                     SELECT "id","resource_owner_id","application_id","token","refresh_token","expires_in","revoked_at","created_at","scopes","previous_refresh_token" FROM "aoauth_access_tokens"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aoauth_access_tokens"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20201222103231"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateLeveretAuthTables (20221226030232)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "identities" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "uid" varchar NOT NULL, "provider" varchar NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_identities_on_user_id" ON "identities" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_identities_on_uid_and_provider" ON "identities" ("uid", "provider")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aidentities" ("id" integer NOT NULL PRIMARY KEY, "uid" varchar NOT NULL, "provider" varchar NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aidentities_on_uid_and_provider" ON "aidentities" ("uid", "provider")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aidentities_on_user_id" ON "aidentities" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aidentities" ("id","uid","provider","user_id","created_at","updated_at")
+                     SELECT "id","uid","provider","user_id","created_at","updated_at" FROM "identities"[0m
+  [1m[35m (0.8ms)[0m  [1m[35mDROP TABLE "identities"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "identities" ("id" integer NOT NULL PRIMARY KEY, "uid" varchar NOT NULL, "provider" varchar NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5373344100"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_identities_on_user_id" ON "identities" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_identities_on_uid_and_provider" ON "identities" ("uid", "provider")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "identities" ("id","uid","provider","user_id","created_at","updated_at")
+                     SELECT "id","uid","provider","user_id","created_at","updated_at" FROM "aidentities"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aidentities"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20221226030232"]]
+  [1m[36mTRANSACTION (2.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2023-02-21 05:40:09.606694"], ["updated_at", "2023-02-21 05:40:09.606694"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m

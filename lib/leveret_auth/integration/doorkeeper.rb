@@ -17,7 +17,7 @@ module LeveretAuth
         def find_strategy(grant_type, provider: nil)
           dispathcer_name = "#{grant_type.to_s.downcase}_strategy"
           raise GrantTypeError unless respond_to?(dispathcer_name, true)
-          
+
           method(dispathcer_name).call(provider)
         end
 

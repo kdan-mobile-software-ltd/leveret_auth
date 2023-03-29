@@ -43,7 +43,7 @@ module LeveretAuth
     end
 
     def before_user_save
-      @before_user_save
+      @before_user_save || proc {}
     end
 
     def user_model

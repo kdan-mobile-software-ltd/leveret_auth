@@ -11,13 +11,13 @@ module Devise
       end
 
       module ClassMethods
-        def setup_user_from_third_party(provider:, uid:, email:)
+        def setup_user_from_third_party(provider:, uid:, email:, &block)
           raise LeveretAuth::Errors::ThirdPartyNotProvideEmail if email.nil? || email.empty?
 
           identity = LeveretAuth::Identities.find_or_initialize_by(uid: uid, provider: provider)
           return identity.user unless identity.new_record?
 
-          identity.user = setup_with_temporary_passsword(email, &LeveretAuth.configuration.before_user_save)
+          identity.user = setup_with_temporary_passsword(email, &block)
           identity.save!
           identity.user
         end
