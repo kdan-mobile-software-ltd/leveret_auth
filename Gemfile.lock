@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    leveret_auth (0.0.2)
+    leveret_auth (0.0.3)
       devise (>= 4.8.1)
       net-ldap (~> 0.1)
 
