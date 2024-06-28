@@ -11,6 +11,10 @@ Gem::Specification.new do |s|
   s.require_path = ["lib"]
   s.homepage     = "https://github.com/kdan-mobile-software-ltd/leveret_auth"
   s.license      = 'MIT'
+  s.metadata     =  {
+                      "source_code_uri" => "https://github.com/kdan-mobile-software-ltd/leveret_auth",
+                      "changelog_uri" => "https://github.com/kdan-mobile-software-ltd/leveret_auth/blob/master/CHANGELOG.md"
+                    }
 
   s.required_ruby_version = '>= 2.7.0'
   s.add_runtime_dependency 'net-ldap', '~> 0.1'
