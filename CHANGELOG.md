@@ -1,3 +1,8 @@
+## [0.0.4] - 2024-06-28
+- Add MIT License.
+- Add gitlab template.
+- Add gemspec metadata.
+
 ## [0.0.3] - 2023-11-29
 
 - Fix bug for devise version dependency
